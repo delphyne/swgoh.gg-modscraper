@@ -21,7 +21,7 @@ class HtmlScraperTest {
 			</w>
 		''')
 		Stat stat = HtmlScraper.statFromNode(gpath.find())
-		assert stat.value == '4.27'
+		assert stat.value == 4.27
 		assert stat.type == 'Critical Chance'
 		assert stat.percent
 	}
@@ -38,7 +38,7 @@ class HtmlScraperTest {
 			</w>
 		''')
 		Stat stat = HtmlScraper.statFromNode(gpath.find())
-		assert stat.value == '664'
+		assert stat.value == 664
 		assert stat.type == 'Protection'
 		assert !stat.percent
 	}
@@ -92,12 +92,12 @@ class HtmlScraperTest {
 		assert mod.rarity == 'V'
 		assert mod.tier == 'A'
 		assert mod.slot == 'Transmitter'
-		assert mod.primary == new Stat(type: "Offense", value: "5.88", percent: true)
+		assert mod.primary == new Stat(type: "Offense", value: 5.88, percent: true)
 		assert mod.secondary == [
-				new Stat(type: "Protection", value: "4.27", percent: true),
-				new Stat(type: "Defense", value: "2.38", percent: true),
-				new Stat(type: "Protection", value: "664", percent: false),
-				new Stat(type: "Critical Chance", value: "2.25", percent: true)
+				new Stat(type: "Protection", value: 4.27, percent: true),
+				new Stat(type: "Defense", value: 2.38, percent: true),
+				new Stat(type: "Protection", value: 664, percent: false),
+				new Stat(type: "Critical Chance", value: 2.25, percent: true)
 		]
 	}
 
@@ -137,7 +137,7 @@ class HtmlScraperTest {
 		assert mod.rarity == 'III'
 		assert mod.tier == 'E'
 		assert mod.slot == 'Multiplexer'
-		assert mod.primary == new Stat(type: 'Protection', value: '1.5', percent: true)
+		assert mod.primary == new Stat(type: 'Protection', value: 1.5, percent: true)
 		assert mod.secondary == []
 	}
 
@@ -455,12 +455,12 @@ class HtmlScraperTest {
 						rarity: 'V',
 						tier: 'A',
 						slot: 'Transmitter',
-						primary: new Stat(type: 'Offense', value: '5.88', percent: true),
+						primary: new Stat(type: 'Offense', value: 5.88, percent: true),
 						secondary: [
-								new Stat(type: 'Speed', value: '4', percent: false),
-								new Stat(type: 'Critical Chance', value: '1.57', percent: true),
-								new Stat(type: 'Protection', value: '539', percent: false),
-								new Stat(type: 'Defense', value: '1.36', percent: true)
+								new Stat(type: 'Speed', value: 4, percent: false),
+								new Stat(type: 'Critical Chance', value: 1.57, percent: true),
+								new Stat(type: 'Protection', value: 539, percent: false),
+								new Stat(type: 'Defense', value: 1.36, percent: true)
 						]),
 				new Mod(name: 'Mk V-A Health Receiver',
 						set:'Health',
@@ -468,12 +468,12 @@ class HtmlScraperTest {
 						rarity: 'V',
 						tier: 'A',
 						slot: 'Receiver',
-						primary: new Stat(type: 'Speed', value: '30', percent: false),
+						primary: new Stat(type: 'Speed', value: 30, percent: false),
 						secondary: [
-								new Stat(type: 'Offense', value: '0.8', percent: true),
-								new Stat(type: 'Critical Chance', value: '1.61', percent: true),
-								new Stat(type: 'Health', value: '252', percent: false),
-								new Stat(type: 'Tenacity', value: '2.13', percent: true)
+								new Stat(type: 'Offense', value: 0.8, percent: true),
+								new Stat(type: 'Critical Chance', value: 1.61, percent: true),
+								new Stat(type: 'Health', value: 252, percent: false),
+								new Stat(type: 'Tenacity', value: 2.13, percent: true)
 						]),
 				new Mod(name: 'Mk V-A Health Processor',
 						set:'Health',
@@ -481,12 +481,12 @@ class HtmlScraperTest {
 						rarity: 'V',
 						tier: 'A',
 						slot: 'Processor',
-						primary: new Stat(type: 'Defense', value: '11.75', percent: true),
+						primary: new Stat(type: 'Defense', value: 11.75, percent: true),
 						secondary: [
-								new Stat(type: 'Offense', value: '0.38', percent: true),
-								new Stat(type: 'Speed', value: '15', percent: false),
-								new Stat(type: 'Protection', value: '443', percent: false),
-								new Stat(type: 'Potency', value: '4.9', percent: true)
+								new Stat(type: 'Offense', value: 0.38, percent: true),
+								new Stat(type: 'Speed', value: 15, percent: false),
+								new Stat(type: 'Protection', value: 443, percent: false),
+								new Stat(type: 'Potency', value: 4.9, percent: true)
 						]),
 				new Mod(name: 'Mk V-A Health Holo-Array',
 						set:'Health',
@@ -494,12 +494,12 @@ class HtmlScraperTest {
 						rarity: 'V',
 						tier: 'A',
 						slot: 'Holo-Array',
-						primary: new Stat(type: 'Defense', value: '11.75', percent: true),
+						primary: new Stat(type: 'Defense', value: 11.75, percent: true),
 						secondary: [
-								new Stat(type: 'Speed', value: '10', percent: false),
-								new Stat(type: 'Offense', value: '0.32', percent: true),
-								new Stat(type: 'Critical Chance', value: '1.26', percent: true),
-								new Stat(type: 'Protection', value: '454', percent: false)
+								new Stat(type: 'Speed', value: 10, percent: false),
+								new Stat(type: 'Offense', value: 0.32, percent: true),
+								new Stat(type: 'Critical Chance', value: 1.26, percent: true),
+								new Stat(type: 'Protection', value: 454, percent: false)
 						]),
 				new Mod(name: 'Mk V-A Health Data-Bus',
 						set:'Health',
@@ -507,12 +507,12 @@ class HtmlScraperTest {
 						rarity: 'V',
 						tier: 'A',
 						slot: 'Data-Bus',
-						primary: new Stat(type: 'Protection', value: '23.5', percent: true),
+						primary: new Stat(type: 'Protection', value: 23.5, percent: true),
 						secondary: [
-								new Stat(type: 'Tenacity', value: '1.72', percent: true),
-								new Stat(type: 'Speed', value: '14', percent: false),
-								new Stat(type: 'Health', value: '0.61', percent: true),
-								new Stat(type: 'Health', value: '326', percent: false)
+								new Stat(type: 'Tenacity', value: 1.72, percent: true),
+								new Stat(type: 'Speed', value: 14, percent: false),
+								new Stat(type: 'Health', value: 0.61, percent: true),
+								new Stat(type: 'Health', value: 326, percent: false)
 						]),
 				new Mod(name: 'Mk V-A Health Multiplexer',
 						set:'Health',
@@ -520,12 +520,12 @@ class HtmlScraperTest {
 						rarity: 'V',
 						tier: 'A',
 						slot: 'Multiplexer',
-						primary: new Stat(type: 'Health', value: '5.88', percent: true),
+						primary: new Stat(type: 'Health', value: 5.88, percent: true),
 						secondary: [
-								new Stat(type: 'Critical Chance', value: '1.8', percent: true),
-								new Stat(type: 'Speed', value: '5', percent: false),
-								new Stat(type: 'Defense', value: '6', percent: false),
-								new Stat(type: 'Health', value: '342', percent: false)
+								new Stat(type: 'Critical Chance', value: 1.8, percent: true),
+								new Stat(type: 'Speed', value: 5, percent: false),
+								new Stat(type: 'Defense', value: 6, percent: false),
+								new Stat(type: 'Health', value: 342, percent: false)
 						]),
 		]
 	}

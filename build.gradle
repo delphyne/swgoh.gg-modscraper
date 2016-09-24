@@ -1,4 +1,5 @@
 apply plugin: GroovyPlugin
+apply plugin: ApplicationPlugin
 
 repositories {
 	jcenter()
@@ -12,3 +13,5 @@ dependencies {
 
 	testCompile 'junit:junit:4.12'
 }
+
+mainClassName = 'com.github.delphyne.swgoh.modscraper.Main'
