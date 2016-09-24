@@ -1,0 +1,14 @@
+apply plugin: GroovyPlugin
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	compile localGroovy()
+	compile 'com.opencsv:opencsv:3.8'
+	compile 'net.sourceforge.argparse4j:argparse4j:0.7.0'
+	compile 'org.ccil.cowan.tagsoup:tagsoup:1.2'
+
+	testCompile 'junit:junit:4.12'
+}
