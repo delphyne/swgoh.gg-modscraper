@@ -47,9 +47,14 @@ class Main {
 
 		List<Character> characters
 		if (namespace.get(account.getDest())) {
-			characters = new URL("https://swgoh.gg/u/${namespace.get(account.getDest())}/collection/").withReader {
+			URL url = new URL("https://swgoh.gg/u/${namespace.get(account.getDest())}/collection/")
+			URLConnection connection = url.openConnection()
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36")
+			connection.connect()
+			characters = new BufferedReader(new InputStreamReader(connection.inputStream)).withCloseable {
 				new HtmlScraper().scrape(it)
 			}
+
 		} else (
 			characters = namespace.<File>get(input.getDest()).withReader {
 				new HtmlScraper().scrape(it)
