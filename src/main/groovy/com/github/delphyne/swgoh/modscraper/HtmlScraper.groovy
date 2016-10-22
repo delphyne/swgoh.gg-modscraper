@@ -22,7 +22,7 @@ class HtmlScraper {
 			nc.name() == 'div' && nc.attributes().get('class')?.split(' ')?.contains('collection-char')
 		}.collect { NodeChild nc ->
 			characterFromNode(nc)
-		}
+		}.findAll()
 	}
 
 	private static NodeChild findChildWithClass(NodeChild parent, String tag, String cls) {
@@ -35,6 +35,9 @@ class HtmlScraper {
 		Character character = new Character()
 		character.name = trim(findChildWithClass(nc, 'div', 'collection-char-name').text())
 		NodeChild portrait = findChildWithClass(nc, 'div', 'player-char-portrait')
+		if (!portrait) {
+			return null
+		}
 		character.level = findChildWithClass(portrait, 'div', 'char-portrait-full-level').text().trim()
 		character.gearLevel = findChildWithClass(portrait, 'div', 'char-portrait-full-gear-level').text().trim()
 

@@ -49,6 +49,9 @@ class Main {
 		if (namespace.get(account.getDest())) {
 			URL url = new URL("https://swgoh.gg/u/${namespace.get(account.getDest())}/collection/")
 			URLConnection connection = url.openConnection()
+			// SWGOH.gg returns 403 forbiddens for the java user agent in an
+			// attempt to stop tools like this from scraping their website.
+			// oops.
 			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36")
 			connection.connect()
 			characters = new BufferedReader(new InputStreamReader(connection.inputStream)).withCloseable {
