@@ -1,13 +1,12 @@
 package com.github.delphyne.swgoh.modscraper
 
-import com.github.delphyne.swgoh.model.Character
 import com.github.delphyne.swgoh.model.Mod
 import com.github.delphyne.swgoh.model.Stat
 
 class Row {
 
 	Mod mod
-	Character equippedOn
+	String equippedOn
 
 	Map<String, String> columns() {
 		def c = [
@@ -17,7 +16,8 @@ class Row {
 				Rarity: mod.rarity,
 				Tier: mod.tier,
 				Slot: mod.slot,
-				'Equipped By': equippedOn.name
+				Primary: statKey(mod.primary),
+				'Equipped By': equippedOn
 		] + [
 				(statKey(mod.primary)): mod.primary.value
 		]

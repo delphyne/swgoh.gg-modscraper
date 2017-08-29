@@ -1,20 +1,19 @@
 package com.github.delphyne.swgoh.modscraper
 
-import com.github.delphyne.swgoh.model.Character
 import com.github.delphyne.swgoh.model.Mod
 import com.opencsv.CSVWriter
 
 class CsvWriter {
 
-	void write(List<Character> characters, Writer writer) {
+	void write(Map<String, List<Mod>> mods, Writer writer) {
 		// pivot characters into list of mods, storing each unique stat(+percentage) type
 		Set<String> stats = []
 
-		List<Row> rows = characters.inject((List<Row>) []) { List<Row> rows, Character character ->
-			rows + character.mods.collect {Mod mod ->
+		List<Row> rows = mods.inject((List<Row>)[]) { List<Row> acc, Map.Entry<String, List<Mod>> entry ->
+			acc + entry.value.collect { mod ->
 				stats << Row.statKey(mod.primary)
 				stats += mod.secondary.collect { Row.statKey(it) }
-				new Row(mod: mod, equippedOn: character)
+				new Row(mod: mod, equippedOn: entry.key)
 			}
 		}
 
@@ -25,7 +24,8 @@ class CsvWriter {
 					'Level',
 					'Rarity',
 					'Tier',
-					'Slot'
+					'Slot',
+					'Primary',
 			] + stats.sort(false) + ["Equipped By"]
 
 			out.writeNext(columns as String[], true)

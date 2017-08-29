@@ -10,6 +10,15 @@ import org.junit.Test
 class HtmlScraperTest {
 
 	@Test
+	void testFoo() {
+		def r = new File('/Users/bcarr/Desktop/mods.htm').withReader { reader ->
+			new HtmlScraper().scrape(reader)
+		}
+
+		println r
+	}
+
+	@Test
 	void testStatFromNodePercent() {
 		def slurper = new XmlSlurper();
 		GPathResult gpath = slurper.parseText('''

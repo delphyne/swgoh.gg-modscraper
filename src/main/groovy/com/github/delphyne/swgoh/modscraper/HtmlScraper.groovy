@@ -1,6 +1,5 @@
 package com.github.delphyne.swgoh.modscraper
 
-import com.github.delphyne.swgoh.model.Character
 import com.github.delphyne.swgoh.model.Mod
 import com.github.delphyne.swgoh.model.Stat
 import groovy.util.slurpersupport.GPathResult
@@ -15,40 +14,25 @@ class HtmlScraper {
 	static final Pattern STAT_VALUE_PATTERN = ~/\+(?<value>[\d.]+)(?<percent>%)?/
 	static final Pattern MOD_NAME_PATTERN = ~/\s*Mk\s+(?<rarity>[VI]+)-(?<tier>[A-E])\s+(?<set>\w+(?: \w+)?)\s+(?<slot>\w+(?:-\w+)?)\s*/
 
-	List<Character> scrape(Reader reader) {
+	boolean scrape(Reader reader, Map<String, List<Mod>> results) {
 		XmlSlurper slurper = new XmlSlurper(new Parser())
 		GPathResult html = slurper.parse(reader)
-		findChildWithClass(html.find(), 'div', 'character-list').'**'.findAll { NodeChild nc ->
-			nc.name() == 'div' && nc.attributes().get('class')?.split(' ')?.contains('collection-char')
-		}.collect { NodeChild nc ->
-			characterFromNode(nc)
-		}.findAll()
+		findChildWithClass(html.find(), 'div', 'mod-list').'**'.findAll { NodeChild nc ->
+			nc.name() == 'div' && nc.attributes().get('class')?.split(' ')?.contains('collection-mod')
+		}.inject(results) { Map<String, List<Mod>> acc, NodeChild it ->
+			def character = findChildWithClass(it, 'img', 'char-portrait-img').attributes().get('alt').trim()
+			acc[character] << modFromNode(it)
+			acc
+		}
+		findChildWithClass(html.find(), 'ul', 'pagination').'**'.findAll { NodeChild nc ->
+			nc.name() == 'a' && nc.attributes().get('aria-label') == 'Next'
+		}
 	}
 
 	private static NodeChild findChildWithClass(NodeChild parent, String tag, String cls) {
 		parent.'**'.find { NodeChild nc ->
 			nc.name() == tag && nc.attributes().get('class')?.split(' ')?.contains(cls)
 		}
-	}
-
-	private static Character characterFromNode(NodeChild nc) {
-		Character character = new Character()
-		character.name = trim(findChildWithClass(nc, 'div', 'collection-char-name').text())
-		NodeChild portrait = findChildWithClass(nc, 'div', 'player-char-portrait')
-		if (!portrait) {
-			return null
-		}
-		character.level = findChildWithClass(portrait, 'div', 'char-portrait-full-level').text().trim()
-		character.gearLevel = findChildWithClass(portrait, 'div', 'char-portrait-full-gear-level').text().trim()
-
-		NodeChild modsList = findChildWithClass(nc, 'div', 'pc-statmod-list')
-		modsList.'**'.findAll { NodeChild it ->
-			it.name() == 'div' && it.attributes().get('class')?.split(' ')?.contains('statmod')
-		}.each {
-			character.mods << modFromNode(it)
-		}
-
-		character
 	}
 
 	private static Mod modFromNode(NodeChild nc) {

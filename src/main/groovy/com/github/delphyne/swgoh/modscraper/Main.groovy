@@ -1,12 +1,10 @@
 package com.github.delphyne.swgoh.modscraper
 
-import com.github.delphyne.swgoh.model.Character
 import net.sourceforge.argparse4j.ArgumentParsers
 import net.sourceforge.argparse4j.impl.Arguments
 import net.sourceforge.argparse4j.inf.Argument
 import net.sourceforge.argparse4j.inf.ArgumentParser
 import net.sourceforge.argparse4j.inf.ArgumentParserException
-import net.sourceforge.argparse4j.inf.MutuallyExclusiveGroup
 import net.sourceforge.argparse4j.inf.Namespace
 
 class Main {
@@ -17,18 +15,11 @@ class Main {
 				.description('Given a username, scrapes the users mods from swgoh.gg into a CSV.')
 				.defaultHelp(true)
 
-		MutuallyExclusiveGroup group = parser.addMutuallyExclusiveGroup('Input')
-			.required(true)
-
-		Argument account = group
-				.addArgument('-a', '--account-name')
+		Argument account = parser
+				.addArgument('account-name')
 				.help('Your account on swgoh.gg')
+				.required(true)
 				.type(String)
-
-		Argument input = group
-				.addArgument('-i', '--character-html')
-				.help('A saved HTML character collection page')
-				.type(Arguments.fileType().verifyIsFile().verifyCanRead())
 
 		Argument output = parser
 				.addArgument('-o', '--output-file')
@@ -45,27 +36,25 @@ class Main {
 			throw new Exception() // noop
 		}
 
-		List<Character> characters
-		if (namespace.get(account.getDest())) {
-			URL url = new URL("https://swgoh.gg/u/${namespace.get(account.getDest())}/collection/")
-			URLConnection connection = url.openConnection()
-			// SWGOH.gg returns 403 forbiddens for the java user agent in an
-			// attempt to stop tools like this from scraping their website.
-			// oops.
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36")
-			connection.connect()
-			characters = new BufferedReader(new InputStreamReader(connection.inputStream)).withCloseable {
-				new HtmlScraper().scrape(it)
-			}
-
-		} else (
-			characters = namespace.<File>get(input.getDest()).withReader {
-				new HtmlScraper().scrape(it)
-			}
-		)
-
+		int page = 1
 		namespace.<File>get(output.getDest()).withWriter {
-			new CsvWriter().write(characters, it)
+			def results = [:].withDefault {[]}
+			while(true) {
+				URL url = new URL("https://swgoh.gg/u/${namespace.get(account.getDest())}/mods/?page=${page++}")
+				URLConnection connection = url.openConnection()
+				// SWGOH.gg returns 403 forbiddens for the java user agent in an
+				// attempt to stop tools like this from scraping their website.
+				// oops.
+				connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36")
+				connection.connect()
+				def next = new BufferedReader(new InputStreamReader(connection.inputStream)).withCloseable {
+					new HtmlScraper().scrape(it, results)
+				}
+				if (!next) {
+					break
+				}
+			}
+			new CsvWriter().write(results, it)
 		}
 	}
 
